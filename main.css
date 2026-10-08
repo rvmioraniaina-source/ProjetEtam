@@ -1,0 +1,708 @@
+/* 1. Variables & reset */
+:root {
+    --red: #c4001d;
+    --deep: #5a0010;
+    --ink: #1a0709;
+    --cream: #f6efe9;
+    --font-serif: "Bodoni Moda", Georgia, serif;
+    --font-sans: "Jost", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body,
+h1, h2, p, dl, dd { margin: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font: 300 1rem/1.7 var(--font-sans);
+    color: var(--ink);
+    background: white;
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    display: block; 
+    max-width: 100%; 
+    height: auto; 
+}
+
+:focus-visible { 
+    outline: 2px solid var(--red); 
+    outline-offset: 3px; 
+}
+
+/* 2. Composants réutilisables */
+.lien_souligne {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding-bottom: 3px;
+    border-bottom: 1px solid;
+    color: inherit;
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.btn {
+    display: inline-block;
+    padding: 1.1rem 2.4rem;
+    border: 1px solid;
+    font: 500 .8rem var(--font-sans);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .3s, color .3s;
+}
+.btn--light { 
+    background: #fff; 
+    color: var(--red); 
+    border-color: #fff; 
+}
+.btn--light:hover { 
+    background: transparent; 
+    color: #fff; 
+}
+.btn--red { 
+    width: 100%; 
+    background: white; 
+    color: var(--red); 
+    border-color: white; 
+}
+.btn--red:hover { 
+    background: var(--red); 
+    color: white; 
+    border-color: white; 
+}
+
+/* 3. Header (images SVG superposées) */
+.header { 
+    position: relative; 
+    background: var(--red); 
+}
+.header_img { 
+    width: 100%; 
+    min-height: 100svh; 
+    object-fit: cover; 
+}
+
+.nav_img {
+    position: absolute;
+    top: 1.5rem;
+    left: 3%;
+    width: 94%;
+}
+
+/* Logo + titre : empilés et centrés par-dessus la photo */
+.header_title {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding-top: 12svh;
+}
+
+@keyframes rise{from{opacity:0;translate:0 30px}}
+.logo_etam,
+.title_image { 
+    width: min(85vw, 46rem); 
+    animation:rise 1.2s both
+}
+.title_image { 
+    width: min(80vw, 41rem);
+    animation:rise 1.2s both;
+    animation-delay: .5s;
+}
+
+/* 4. Intro */
+.intro {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    text-align: center;
+}
+
+/* Repère au-dessus du texte */
+.intro_eyebrow {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--red);
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    justify-content: center;
+}
+
+/* Niveau 1 : accroche */
+.intro_lead { font: 400 clamp(1.3rem, 3vw, 2rem)/1.3 var(--font-serif); }
+.intro_lead em { color: var(--red); }
+
+/* Niveau 2 : explication */
+.intro_desc {
+    max-width: 60ch;
+    margin: .5rem auto 0; 
+    color: #4a3a3d;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* Niveau 3 : action */
+.intro_cta { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: .8rem; 
+    min-height: 25px; 
+}
+.intro_cta:hover { color: var(--red) }
+
+/* ---------- 5. Card : image + infos ---------- */
+.card {
+    display: grid;
+    grid-template-columns: 1fr;
+    background: var(--red);
+    color: #fff;
+}
+
+.img_card {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.infos_event {
+    display: grid;
+    gap: 2rem;
+    padding: 3.5rem 1.5rem;
+    align-content: center;
+    text-align: center;
+}
+
+.infos_event div {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: 2rem 0;
+}
+
+.infos_event dt {
+    font-size: .75rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    opacity: .75;
+
+}
+.infos_event dd {
+    font: 400 clamp(2.2rem, 4.2vw, 3.5rem)/1.1 var(--font-serif);
+}
+
+/* 6. Galerie (Version Mobile : Swipe + Boutons) */
+.galerie { 
+    position: relative; 
+    background: black; 
+    padding: 2rem 0; 
+}
+
+.galerie_sticky { 
+    position: relative; 
+    height: auto; 
+}
+
+.galerie_track {
+    display: flex;
+    gap: 1rem;
+    padding: 0 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+.galerie_track::-webkit-scrollbar { display: none; }
+
+.galerie_track img {
+    flex: 0 0 auto;
+    height: 65svh;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    background: var(--ink);
+    scroll-snap-align: center;
+}
+
+/* Indicateurs (dots) sur mobile */
+.galerie_dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+}
+
+.galerie_dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transition: background-color 0.3s, transform 0.3s;
+    }
+
+.galerie_dot.is-active {
+    background: #ffffff;
+    transform: scale(1.4);
+}
+
+/* ---------- 7. Manifeste ---------- */
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+}
+
+/* --- Images superposées avec fondu --- */
+.content_visual { 
+    position: relative; 
+    aspect-ratio: 4 / 4; 
+    overflow: hidden; 
+    margin-inline: -1.5rem; 
+}
+.content_visual img { 
+    position: absolute; 
+    inset: 0; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+/* La 2ᵉ image apparaît par-dessus la 1ʳᵉ, puis disparaît, en boucle */
+.content_visual img:nth-of-type(2) { animation: fondu 6s ease-in-out infinite; }
+
+@keyframes fondu {
+  0%, 35%  { opacity: 0; }   /* image 1 visible */
+  50%, 85% { opacity: 1; }   /* image 2 visible */
+  100%     { opacity: 0; }   /* retour à l'image 1 */
+}
+
+.content_shop {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;                  /* zone de clic confortable au doigt */
+    padding: 0 1.2rem;
+    background: #fff;
+    color: var(--red);
+    font: 500 .75rem var(--font-sans);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color .3s, color .3s;
+}
+.content_shop:hover { background: var(--red); color: #fff; }
+
+/* --- Texte --- */
+.content_label {
+    color: var(--red);
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+}
+.content_title {
+    margin: .5rem 0 1.2rem;
+    color: var(--red);
+    font: 400 clamp(3rem, 10vw, 4.5rem)/1 var(--font-serif);
+}
+.description_1 { font: 400 clamp(1.15rem, 2vw, 1.4rem)/1.5 var(--font-serif); }
+
+/* Bloc égérie : chiffre clé + texte */
+.content_egerie { margin-top: 1.8rem; }
+.content_stat { 
+    font-size: .8rem; 
+    letter-spacing: .1em; 
+    text-transform: uppercase; 
+}
+.content_stat strong {
+    display: block;
+    color: var(--red);
+    font: 400 2.5rem/1 var(--font-serif);
+    letter-spacing: 0;
+}
+.description_2 { 
+    margin-top: .8rem; 
+    color: #4a3a3d; 
+    font-size: 1rem; 
+    line-height: 1.7; 
+}
+.description_2 strong { 
+    color: var(--ink); 
+    font-weight: 500; 
+}
+
+.content_outro {
+  margin: 0 auto;
+  color: #4a3a3d;
+  font-size: .95rem;
+  line-height: 1.7;
+}
+
+/* ---------- 8. Distribution (making-of) ---------- */
+.distribution {
+  display: grid;
+  background: var(--ink);
+  color: #fff;
+}
+.clap_img { width: 100%; height: 100%; max-height: 70vh; object-fit: cover; }
+
+.credits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  padding: 3rem 1.5rem;
+  align-content: center;
+}
+.credits dt {
+  font: 500 .7rem var(--font-sans);
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  opacity: .6;
+}
+.credits dd { font: 400 1.15rem var(--font-serif); }
+
+/* 9. Jeu concours : ticket VIP */
+.game_content { 
+    padding: 2.5rem 1rem; 
+    background: var(--red); 
+}
+
+.ticket {
+    position: relative;
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem;
+    color: white;
+    text-align: center;
+}
+.ticket_label,
+.eyebrow { 
+    font-size: .75rem; 
+    font-weight: 500; 
+    letter-spacing: .3em; 
+    text-transform: uppercase; 
+}
+.ticket_label { color: var(--red); }
+
+.game_title {
+    margin-top: 1rem;
+    color: white;
+    font: 400 clamp(2.2rem, 8vw, 4.5rem)/1.1 var(--font-serif);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.game_intro {
+  margin-top: 2rem;
+  font: 300 clamp(.8rem, 2.4vw, 1rem)/1.6 var(--font-sans);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.game_details {
+    margin-top: 1.5rem;
+    font: 600 clamp(.85rem, 2.4vw, 1.05rem)/1.8 var(--font-sans);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
+.ticket .btn { width: auto; margin-top: 2.5rem; }
+
+/* 10. Popin (<dialog>) */
+dialog {
+    position: relative;
+    width: min(30rem, calc(100% - 1.5rem));
+    max-height: calc(100svh - 1.5rem);
+    margin: auto;
+    padding: 2.5rem 1.5rem;
+    border: 0;
+    background: var(--cream);
+    overflow: auto;
+}
+dialog::backdrop { 
+    background: rgba(40, 0, 8, .75); 
+    backdrop-filter: blur(4px); 
+}
+dialog h2 { 
+    margin: .4rem 0; 
+    font: 400 2.2rem/1 var(--font-serif); 
+    color: var(--red); 
+}
+
+.popin__close {
+    position: absolute;
+    top: .5rem;
+    right: 1rem;
+    border: 0;
+    background: none;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+.popin__sub { margin-bottom: 1.5rem; }
+
+dialog form { 
+    display: grid; 
+    gap: 1rem; 
+}
+.row { 
+    display: grid; 
+    gap: 1rem; 
+}
+
+dialog label {
+    display: grid;
+    gap: .3rem;
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
+dialog input:not([type="checkbox"]) {
+    width: 100%;
+    padding: .8rem;
+    border: 1px solid #c9b8b0;
+    border-radius: 0;
+    background: #fff;
+    font: 300 1rem var(--font-sans);
+}
+dialog input:focus { 
+    border-color: var(--red); 
+    outline: 0; 
+}
+dialog .invalid input { border-color: var(--red); }
+dialog small {
+    min-height: 1em;
+    color: var(--red);
+    font: 400 .75rem var(--font-sans);
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.check {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: .7rem;
+    font-size: .85rem;
+    font-weight: 300;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.check input { 
+    margin-top: .2rem; 
+    accent-color: var(--red); 
+}
+.check small { grid-column: 2; }
+
+.popin__ok { 
+    padding: 1rem 0; 
+    text-align: center; 
+}
+.popin__ok p { margin: 1rem 0 1.5rem; }
+
+
+/* ---------- Barre CTA sticky ---------- */
+.sticky_cta {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .8rem 1rem;
+  background: var(--red);
+  color: #fff;
+  font-size: .75rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  transform: translateY(110%);
+  transition: transform .4s;
+}
+.sticky_cta.visible { transform: none; }
+.sticky_cta .btn { 
+    padding: .7rem 1.2rem; 
+    font-size: .7rem; 
+}
+
+/* ---------- Finitions ---------- */
+.credits div { padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, .2); }
+
+/* 11. Footer */
+footer { 
+    padding: 1.5rem; 
+    background: var(--ink); 
+    color: #fff; 
+    font-size: .75rem; 
+    text-align: center; 
+}
+
+
+/* 13. Desktop (≥ 768px) */
+@media (min-width: 48rem) {
+    .nav_img { top: 2rem; }
+    .logo_etam,
+    .title_image { width: min(43vw, 46rem); }
+    .card { grid-template-columns: 1fr 1fr; }   /* desktop : image | infos */
+    .img_card { aspect-ratio: 4 / 3; }
+    .infos_event { padding: 1rem; gap: 1rem; }
+    .infos_event div { padding: 0.5rem 0 } 
+    .content { 
+        flex-direction: row; 
+        flex-wrap: wrap; 
+        align-items: center; 
+        gap: 3rem 5rem; 
+        padding: 5rem 2rem; 
+    }
+    .content_visual,
+    .content_text { 
+        flex: 1 1 0; 
+        min-width: 0; 
+    }
+    .content_visual { margin-inline: 0; }
+    .content_outro { flex: 0 0 100%; }
+
+    .distribution { grid-template-columns: 1.3fr 1fr; }
+    .row { grid-template-columns: 1fr 1fr; }
+    dialog { padding: 3rem; }
+    .sticky_cta { 
+        justify-content: center; 
+        gap: 2rem; 
+    }
+    .intro { padding: 6rem 2rem; }
+    .galerie_track { 
+        gap: 1.5rem; 
+        padding: 0 2rem; 
+    }
+    .galerie_track img { height: 75svh; }
+    .galerie { padding: 0; }
+    .galerie_sticky {
+        position: sticky;
+        top: 0;
+        display: flex;
+        align-items: center;
+        height: 100svh;
+        overflow: hidden;
+    }
+    .galerie_track {
+        overflow-x: visible;
+        scroll-snap-type: none;
+        /* Le transform est géré par JavaScript sur Desktop */
+    } 
+    .galerie_dots { display: none; }
+}
+ 
+/* verison mobile de la section header */
+@media (max-width: 47.99rem) {
+    .header_img {
+        width: 100%;
+        height: auto;
+        min-height: 0;          /* annule le min-height: 100svh de la règle globale */
+    }
+    .header_title {
+        justify-content: center;
+        gap: 43px;
+        padding-top: 46vw;
+    }
+    .logo_etam,
+    .title_image { width: 68vw; }
+    .title_image { translate: 0 25vw; }
+}
+
+/* verison mobile de la section distribution */
+@media (max-width: 47.99rem) {
+  .credits {
+    text-align: center;
+  }
+}
+
+/* Verison mobile de la section card */
+@media (max-width: 47.99rem) {
+    .card {
+        display: grid;
+        grid-template-columns: 1fr;
+        background: var(--red);
+        color: #fff;
+    }
+
+    .img_card {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center top;
+    }
+
+  /* 3 colonnes de largeur identique */
+    .infos_event {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;                              /* l'espace vient du padding des colonnes */
+        padding: 2.5rem 1rem;
+        text-align: center;
+    }
+
+  /* Chaque info : libellé au-dessus, valeur en dessous, alignés en haut */
+    .infos_event div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: .6rem;
+        padding: 0 .5rem;
+    }
+
+  /* Ligne verticale blanche entre chaque info */
+    .infos_event div + div {
+        border-left: 1px solid #fff;
+    }
+
+    .infos_event dt {
+        font-size: .75rem;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        opacity: .9;
+    }
+
+    .infos_event dd {
+        font: 400 clamp(1rem, 4.8vw, 1.4rem)/1.2 var(--font-serif);
+    }
+}
+
+/* ---------- 14. Accessibilité : réduction des animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+    .marquee_track { animation: none; }
+    .logo_etam,
+    .title_image { animation: none; }
+    .content_visual img:nth-of-type(2) { animation: none; }
+    .galerie { height: auto !important; }
+    .galerie_sticky { 
+        position: static; 
+        height: auto; 
+        padding: 2rem 0; 
+        overflow-x: auto; 
+    }
+    .galerie_track { transform: none !important; }
+}
