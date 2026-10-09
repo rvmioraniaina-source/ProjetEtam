@@ -2,7 +2,7 @@
 
 Test technique d’intégration web (alternance Etam) : intégration responsive de la page évènementielle du **Live Show Etam du 30 septembre 2025**, avec un jeu concours en popin.
 
-> Réalisé par **[Velone RALAIVAOALANDREO]** – [09/10/26]
+> Réalisé par **Velone RALAIVAOALANDREO** – 09/10/26
 
 ## Aperçu rapide
 
